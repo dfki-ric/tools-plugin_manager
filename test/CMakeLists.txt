@@ -1,3 +1,5 @@
+find_package(Boost COMPONENTS thread system filesystem)
+
 rock_library(plugin_manager_test_plugins
             SOURCES plugin_loader_data/FloatPlugin.cpp
                     plugin_loader_data/StringPlugin.cpp
