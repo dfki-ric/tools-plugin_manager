@@ -1,4 +1,4 @@
-find_package(Boost COMPONENTS filesystem)
+find_package(Boost COMPONENTS filesystem thread system)
 
 rock_library(plugin_manager
     SOURCES PluginManager.cpp
