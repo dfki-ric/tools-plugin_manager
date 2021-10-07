@@ -1,4 +1,4 @@
-find_package(Boost COMPONENTS filesystem)
+find_package(Boost COMPONENTS thread system filesystem)
 
 rock_library(plugin_manager
     SOURCES PluginManager.cpp
@@ -13,5 +13,7 @@ rock_library(plugin_manager
     DEPS_CMAKE Glog 
     DEPS_PLAIN
         Boost_FILESYSTEM
+	Boost_SYSTEM
+	Boost_THREAD
 )
 
