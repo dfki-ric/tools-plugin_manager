@@ -11,9 +11,9 @@ rock_library(plugin_manager
             Demangle.hpp
     DEPS_PKGCONFIG class_loader tinyxml base-logging
     DEPS_CMAKE Glog 
-    DEPS_PLAIN
-        Boost_FILESYSTEM
-	Boost_SYSTEM
-	Boost_THREAD
+    DEPS
+        Boost::filesystem
+        Boost::system
+        Boost::thread
 )
 
