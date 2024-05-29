@@ -1,6 +1,8 @@
 find_package(Boost COMPONENTS thread system filesystem)
 find_package(class_loader REQUIRED)
 
+list(JOIN class_loader_INCLUDE_DIRS " -I"  CLASS_LOADER_DIRS)
+
 rock_library(plugin_manager
     SOURCES PluginManager.cpp
             PluginLoader.cpp
