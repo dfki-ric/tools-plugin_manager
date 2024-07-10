@@ -4,7 +4,7 @@
 #include <vector>
 #include <string>
 #include <set>
-#include <boost/shared_ptr.hpp>
+#include <memory>
 #include "PluginInfo.hpp"
 
 class TiXmlElement;
@@ -19,7 +19,7 @@ namespace plugin_manager
 class PluginManager
 {
 public:
-    typedef boost::shared_ptr<PluginInfo> PluginInfoPtr;
+    typedef std::shared_ptr<PluginInfo> PluginInfoPtr;
 
     /**
      * @brief Constructor for PluginManager

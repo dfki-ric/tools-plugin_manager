@@ -3,9 +3,8 @@
 #include <map>
 #include <string>
 #include <vector>
-#include <boost/shared_ptr.hpp>
 #include <boost/noncopyable.hpp>
-#include <class_loader/class_loader.h>
+#include <class_loader/class_loader.hpp>
 #include <base-logging/Singleton.hpp>
 #include <glog/logging.h>
 
@@ -23,8 +22,8 @@ namespace plugin_manager
 class PluginLoader : public PluginManager, public boost::noncopyable
 {
     friend class base::Singleton<PluginLoader>;
-    typedef std::map<std::string, boost::shared_ptr<class_loader::ClassLoader> > LoaderMap;
-    typedef std::map<std::string, boost::shared_ptr<void> > SingletonMap;
+    typedef std::map<std::string, std::shared_ptr<class_loader::ClassLoader> > LoaderMap;
+    typedef std::map<std::string, std::shared_ptr<void> > SingletonMap;
 
 public:
     /**
@@ -54,7 +53,7 @@ public:
      * @return True if an instance of the class could be created
      */
     template<class BaseClass>
-    bool createInstance(const std::string& class_name, boost::shared_ptr<BaseClass>& instance);
+    bool createInstance(const std::string& class_name, std::shared_ptr<BaseClass>& instance);
 
     /**
      * @brief Creates an instance of the given class and tries to down cast to the actual implementation.
@@ -64,7 +63,7 @@ public:
      * @throws DownCastException if the cast from BaseClass to InheritedClass isn't possible
      */
     template<class InheritedClass, class BaseClass>
-    bool createInstance(const std::string& class_name, boost::shared_ptr<InheritedClass>& instance);
+    bool createInstance(const std::string& class_name, std::shared_ptr<InheritedClass>& instance);
 
     /**
      * @brief Adds an additional library path to the set of library paths
@@ -112,8 +111,8 @@ private:
      */
     template<class BaseClass>
     void createInstanceIntern(const std::string& derived_class_name,
-                                const boost::shared_ptr<class_loader::ClassLoader>& loader,
-                                boost::shared_ptr< BaseClass >& instance);
+                                const std::shared_ptr<class_loader::ClassLoader>& loader,
+                                std::shared_ptr< BaseClass >& instance);
 
 private:
     /** Mapping between library name and class loader instances */
@@ -127,7 +126,7 @@ private:
 };
 
 template<class BaseClass>
-bool PluginLoader::createInstance(const std::string& class_name, boost::shared_ptr<BaseClass>& instance)
+bool PluginLoader::createInstance(const std::string& class_name, std::shared_ptr<BaseClass>& instance)
 {
     // get library name of the class
     std::string lib_name;
@@ -182,13 +181,13 @@ bool PluginLoader::createInstance(const std::string& class_name, boost::shared_p
 }
 
 template<class InheritedClass, class BaseClass>
-bool PluginLoader::createInstance(const std::string& class_name, boost::shared_ptr<InheritedClass>& instance)
+bool PluginLoader::createInstance(const std::string& class_name, std::shared_ptr<InheritedClass>& instance)
 {
-    boost::shared_ptr<BaseClass> base_instance;
+    std::shared_ptr<BaseClass> base_instance;
     if(!createInstance<BaseClass>(class_name, base_instance))
         return false;
 
-    instance = boost::dynamic_pointer_cast<InheritedClass>(base_instance);
+    instance = std::dynamic_pointer_cast<InheritedClass>(base_instance);
     if(instance == NULL)
         throw DownCastException<InheritedClass, BaseClass>(class_name);
     return true;
@@ -196,8 +195,8 @@ bool PluginLoader::createInstance(const std::string& class_name, boost::shared_p
 
 template<class BaseClass>
 void PluginLoader::createInstanceIntern(const std::string& derived_class_name,
-                                        const boost::shared_ptr<class_loader::ClassLoader>& loader,
-                                        boost::shared_ptr< BaseClass >& instance)
+                                        const std::shared_ptr<class_loader::ClassLoader>& loader,
+                                        std::shared_ptr< BaseClass >& instance)
 {
     bool singleton = false;
     if(getSingletonFlag(derived_class_name, singleton) && singleton)
@@ -208,13 +207,13 @@ void PluginLoader::createInstanceIntern(const std::string& derived_class_name,
         {
             // create an stores a new instance
             instance = loader->createInstance<BaseClass>(derived_class_name);
-            boost::shared_ptr< void > instance_ptr = boost::static_pointer_cast<void>(instance);
+            std::shared_ptr< void > instance_ptr = std::static_pointer_cast<void>(instance);
             singletons[derived_class_name] = instance_ptr;
         }
         else
         {
             // returns existing instance
-            instance = boost::static_pointer_cast<BaseClass>(singleton_it->second);
+            instance = std::static_pointer_cast<BaseClass>(singleton_it->second);
         }
     }
     else

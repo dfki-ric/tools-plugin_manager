@@ -86,7 +86,7 @@ bool PluginLoader::loadLibrary(const std::string& class_name)
         string path = lib_path + "/lib" + lib_name + ".so";
         if(boost::filesystem::exists(path))
         {
-            boost::shared_ptr<class_loader::ClassLoader> loader;
+            std::shared_ptr<class_loader::ClassLoader> loader;
             loader.reset(new class_loader::ClassLoader(path, false));
             if(loader && loader->isLibraryLoaded())
             {
