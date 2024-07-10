@@ -29,11 +29,11 @@ BOOST_AUTO_TEST_CASE(plugin_loader_test)
     BOOST_CHECK(PluginLoader::getInstance()->hasClassOfType("StringPlugin", "plugin_manager::BaseClass2") == false);
 
     // create instances
-    boost::shared_ptr<BaseClass> base_plugin;
+    std::shared_ptr<BaseClass> base_plugin;
     BOOST_CHECK(PluginLoader::getInstance()->createInstance("StringPlugin", base_plugin));
-    boost::shared_ptr<StringPlugin> string_plugin_a = boost::dynamic_pointer_cast<StringPlugin>(base_plugin);
+    std::shared_ptr<StringPlugin> string_plugin_a = std::dynamic_pointer_cast<StringPlugin>(base_plugin);
 
-    boost::shared_ptr<StringPlugin> string_plugin_b;
+    std::shared_ptr<StringPlugin> string_plugin_b;
     BOOST_CHECK((PluginLoader::getInstance()->createInstance<StringPlugin, BaseClass>("StringPlugin", string_plugin_b)));
 
     BOOST_CHECK(string_plugin_a.get() != string_plugin_b.get());
@@ -42,12 +42,12 @@ BOOST_AUTO_TEST_CASE(plugin_loader_test)
 
     // create singleton instance
     {
-        boost::shared_ptr<FloatPlugin> float_plugin_a;
+        std::shared_ptr<FloatPlugin> float_plugin_a;
         BOOST_CHECK((PluginLoader::getInstance()->createInstance<FloatPlugin, BaseClass>("FloatPlugin", float_plugin_a)));
         float_plugin_a->data = 0;
         BOOST_CHECK(float_plugin_a.use_count() == 2);
 
-        boost::shared_ptr<FloatPlugin> float_plugin_b;
+        std::shared_ptr<FloatPlugin> float_plugin_b;
         BOOST_CHECK((PluginLoader::getInstance()->createInstance<FloatPlugin, BaseClass>("FloatPlugin", float_plugin_b)));
         float_plugin_b->data = 42;
 
@@ -56,12 +56,12 @@ BOOST_AUTO_TEST_CASE(plugin_loader_test)
         BOOST_CHECK(float_plugin_a.use_count() == 3);
     }
 
-    boost::shared_ptr<FloatPlugin> float_plugin;
+    std::shared_ptr<FloatPlugin> float_plugin;
     BOOST_CHECK((PluginLoader::getInstance()->createInstance<FloatPlugin, BaseClass>("FloatPlugin", float_plugin)));
     BOOST_CHECK(float_plugin->data == 42);
 
     // test down case exception
-    boost::shared_ptr<FloatPlugin> string_plugin;
+    std::shared_ptr<FloatPlugin> string_plugin;
     typedef plugin_manager::DownCastException<FloatPlugin, BaseClass> DownCastExceptionType;
     BOOST_CHECK_THROW((PluginLoader::getInstance()->createInstance<FloatPlugin, BaseClass>("StringPlugin", string_plugin)),
                       DownCastExceptionType);
