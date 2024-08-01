@@ -5,7 +5,7 @@
 #include <vector>
 #include <boost/shared_ptr.hpp>
 #include <boost/noncopyable.hpp>
-#include <class_loader/class_loader.h>
+#include <class_loader_melodic/class_loader.h>
 #include <base-logging/Singleton.hpp>
 #include <glog/logging.h>
 
