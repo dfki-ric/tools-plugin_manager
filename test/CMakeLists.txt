@@ -6,7 +6,7 @@ rock_library(plugin_manager_test_plugins
             HEADERS plugin_loader_data/FloatPlugin.hpp
                     plugin_loader_data/StringPlugin.hpp
                     plugin_loader_data/BaseClass.hpp
-            DEPS_PKGCONFIG class_loader)
+            DEPS_PKGCONFIG class_loader_melodic)
 
 
 rock_testsuite(test_suite suite.cpp
