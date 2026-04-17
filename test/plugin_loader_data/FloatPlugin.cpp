@@ -1,5 +1,5 @@
 #include "FloatPlugin.hpp"
-#include <class_loader_melodic/class_loader_register_macro.h>
+#include <class_loader_melodic/register_macro.hpp>
 
 namespace plugin_manager
 {
